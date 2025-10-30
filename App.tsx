@@ -5,7 +5,6 @@
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
 import { StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider,
@@ -28,7 +27,7 @@ function AppContent() {
 
   return (
     <View style={styles.container}>
-      <Text>Hello</Text>
+      <Text>Hellos</Text>
     </View>
   );
 }
