@@ -2,9 +2,9 @@ name: Build Android & iOS
 
 on:
   push:
-    branches: [main]
+    branches: [m_usama]        # updated branch name
   pull_request:
-    branches: [main]
+    branches: [m_usama]        # updated branch name
 
 jobs:
   build-android:
@@ -15,8 +15,16 @@ jobs:
       # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Needed to fetch all branches for merge
 
-      # 2. Setup Node.js (for React Native or similar)
+      # 1a. Merge latest main into branch
+      - name: Merge main into current branch
+        run: |
+          git fetch origin main
+          git merge origin/main --no-edit
+
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,7 +34,7 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
-      # 4. Setup Java 17 explicitly (fixes JDK path issue)
+      # 4. Setup Java 17 explicitly
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -38,7 +46,7 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 6. Verify Java setup (debug info)
+      # 6. Verify Java setup
       - name: Verify Java setup
         run: |
           java -version
@@ -69,6 +77,14 @@ jobs:
       # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Needed to fetch all branches for merge
+
+      # 1a. Merge latest main into branch
+      - name: Merge main into current branch
+        run: |
+          git fetch origin main
+          git merge origin/main --no-edit
 
       # 2. Setup Node.js
       - name: Setup Node.js
@@ -97,7 +113,7 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 15' \
             build
 
-      # 6. Upload build logs (useful for debugging CI builds)
+      # 6. Upload build logs
       - name: Upload iOS build logs
         uses: actions/upload-artifact@v4
         with:
